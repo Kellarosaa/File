@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Compression Tool with File Size</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            padding: 40px;
+            text-align: center;
+        }
+        input[type="file"] {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #138496;
+        }
+        #fileSize {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML Compression Tool with File Size</h1>
+    <input type="file" id="fileInput" accept=".html">
+    <button id="compressButton">Pack and Download</button>
+    <div id="fileSize"></div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                document.getElementById('fileSize').innerText = `File Size: ${file.size} bytes`;
+            }
+        });
+
+        document.getElementById('compressButton').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert('Please select an HTML file to compress.');
+                return;
+            }
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const compressedHTML = event.target.result.replace(/\s+/g, ' ').trim();
+                const blob = new Blob([compressedHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'compressed.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
