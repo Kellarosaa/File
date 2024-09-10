@@ -45,7 +45,7 @@
             reader.onload = function(event) {
                 const content = event.target.result;
                 const compressedContent = compressContent(content);
-                downloadFile(compressedContent, 'compressed.txt');
+                downloadFile(compressedContent, 'compressed.gyatt');
             };
             reader.readAsText(file);
         });
