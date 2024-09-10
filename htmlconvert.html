@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced HTML to TXT Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="file"], textarea, select {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28A745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Advanced HTML to TXT Converter</h1>
+    <input type="file" id="fileInput" accept=".html">
+    <select id="elementSelect">
+        <option value="all">Include All Elements</option>
+        <option value="text-only">Text Only</option>
+    </select>
+    <textarea id="cssInput" rows="4" placeholder="Enter CSS styles here..."></textarea>
+    <button onclick="convertToTxt()">Convert</button>
+    <script>
+        function convertToTxt() {
+            const fileInput = document.getElementById('fileInput');
+            const elementSelect = document.getElementById('elementSelect').value;
+            const cssInput = document.getElementById('cssInput').value;
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const htmlContent = event.target.result;
+                let textContent;
+                if (elementSelect === 'text-only') {
+                    textContent = htmlContent.replace(/<[^>]*>/g, ''); // Remove HTML tags
+                } else {
+                    textContent = htmlContent; // Keep all content
+                }
+                const styledContent = `<style>${cssInput}</style>\n${textContent}`;
+                const blob = new Blob([styledContent], { type: 'text/plain' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'advanced_converted.txt';
+                link.click();
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
