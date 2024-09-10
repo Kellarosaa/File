@@ -1,0 +1,41 @@
+```html
+<!DOCTYPE html>
+<html lang=\en\<head>
+<meta charset=\UTF-8\ <meta name=\viewport\ content=\width=device-width, initial-scale=1.0\ <title>GYATT File Converter</title>
+<link rel=\stylesheet\ href=\styles.css\ <script src=\https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js\script>
+</head>
+<body>
+<div class=\container\ <h1>GYATT File Converter</h1>
+<input type=\file\ id=\textFile\ accept=\txt\ />
+<input type=\file\ id=\imageFile\ accept=\image/*\ />
+<button id=\packAndDownload\Pack and Download</button>
+</div>
+
+<script>
+document.getElementById('packAndDownload').addEventListener('click', async () => {
+const zip = new JSZip();
+const textFileInput = document.getElementById('textFile');
+const imageFileInput = document.getElementById('imageFile');
+
+if (textFileInput.files.length > 0) {
+const textFile = textFileInput.files[0];
+const textContent = await textFile.text();
+zip.file('content.txt', textContent);
+}
+
+if (imageFileInput.files.length > 0) {
+const imageFile = imageFileInput.files[0];
+const imageContent = await imageFile.arrayBuffer();
+zip.file(imageFile.name, imageContent);
+}
+
+const content = await zip.generateAsync({ type: \blob\ });
+const gyattFile = new Blob([content], { type: \application/zip\ });
+const link = document.createElement('a');
+link.href = URL.createObjectURL(gyattFile);
+link.download = \files.gyatt\ link.click();
+});
+</script>
+</body>
+</html>
+```
