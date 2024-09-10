@@ -1,41 +1,74 @@
-```html
 <!DOCTYPE html>
 <html lang=\en\<head>
-<meta charset=\UTF-8\ <meta name=\viewport\ content=\width=device-width, initial-scale=1.0\ <title>GYATT File Converter</title>
-<link rel=\stylesheet\ href=\styles.css\ <script src=\https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js\script>
+<meta charset=\UTF-8\ <meta name=\viewport\ content=\width=device-width, initial-scale=1.0\ <link rel=\stylesheet\ href=\styles.css\ <title>Image to .gyatt Converter</title>
 </head>
 <body>
-<div class=\container\ <h1>GYATT File Converter</h1>
-<input type=\file\ id=\textFile\ accept=\txt\ />
-<input type=\file\ id=\imageFile\ accept=\image/*\ />
-<button id=\packAndDownload\Pack and Download</button>
+<div class=\container\ <h1>Image to .gyatt Converter</h1>
+<form id=\uploadForm\ <label for=\imageUpload\ class=\upload-label\Upload your image:</label>
+<input type=\file\ id=\imageUpload\ accept=\image/*\ required>
+<button type=\submit\ class=\submit-btn\Pack and Download</button>
+</form>
+<p id=\message\ class=\message\p>
 </div>
 
-<script>
-document.getElementById('packAndDownload').addEventListener('click', async () => {
-const zip = new JSZip();
-const textFileInput = document.getElementById('textFile');
-const imageFileInput = document.getElementById('imageFile');
-
-if (textFileInput.files.length > 0) {
-const textFile = textFileInput.files[0];
-const textContent = await textFile.text();
-zip.file('content.txt', textContent);
-}
-
-if (imageFileInput.files.length > 0) {
-const imageFile = imageFileInput.files[0];
-const imageContent = await imageFile.arrayBuffer();
-zip.file(imageFile.name, imageContent);
-}
-
-const content = await zip.generateAsync({ type: \blob\ });
-const gyattFile = new Blob([content], { type: \application/zip\ });
-const link = document.createElement('a');
-link.href = URL.createObjectURL(gyattFile);
-link.download = \files.gyatt\ link.click();
-});
-</script>
+<script src=\script.js\script>
 </body>
 </html>
 ```
+
+### CSS Code (styles.css):
+body {
+font-family: Arial, sans-serif;
+background-color: #f0f4f8;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+}
+
+.container {
+text-align: center;
+padding: 20px;
+border: 2px solid #4CAF50;
+border-radius: 10px;
+background-color: white;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+color: #333;
+}
+
+.upload-label {
+margin-top: 15px;
+display: block;
+font-weight: bold;
+}
+
+input[type=\file\ {
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.submit-btn {
+margin-top: 20px;
+padding: 10px 15px;
+background-color: #4CAF50;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 16px;
+}
+
+.submit-btn:hover {
+background-color: #45a049;
+}
+
+.message {
+margin-top: 20px;
+font-size: 16px;
+color: #d9534f;
+}
