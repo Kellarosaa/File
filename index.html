@@ -1,74 +1,26 @@
 <!DOCTYPE html>
-<html lang=\en\<head>
-<meta charset=\UTF-8\ <meta name=\viewport\ content=\width=device-width, initial-scale=1.0\ <link rel=\stylesheet\ href=\styles.css\ <title>Image to .gyatt Converter</title>
-</head>
-<body>
-<div class=\container\ <h1>Image to .gyatt Converter</h1>
-<form id=\uploadForm\ <label for=\imageUpload\ class=\upload-label\Upload your image:</label>
-<input type=\file\ id=\imageUpload\ accept=\image/*\ required>
-<button type=\submit\ class=\submit-btn\Pack and Download</button>
-</form>
-<p id=\message\ class=\message\p>
-</div>
+<html>
+<head>
+<style>
+a:link, a:visited {
+  background-color: #808080;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
 
-<script src=\script.js\script>
+a:hover, a:active {
+  background-color: red;
+}
+</style>
+</head>
+<body style="background-color:black;">
+
+<a href="image.html" target="_blank">image file</a>
+<a href="text.html">text file</a>
+
+
 </body>
 </html>
-```
-
-### CSS Code (styles.css):
-body {
-font-family: Arial, sans-serif;
-background-color: #f0f4f8;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-margin: 0;
-}
-
-.container {
-text-align: center;
-padding: 20px;
-border: 2px solid #4CAF50;
-border-radius: 10px;
-background-color: white;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-color: #333;
-}
-
-.upload-label {
-margin-top: 15px;
-display: block;
-font-weight: bold;
-}
-
-input[type=\file\ {
-padding: 10px;
-border: 1px solid #ccc;
-border-radius: 5px;
-}
-
-.submit-btn {
-margin-top: 20px;
-padding: 10px 15px;
-background-color: #4CAF50;
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 16px;
-}
-
-.submit-btn:hover {
-background-color: #45a049;
-}
-
-.message {
-margin-top: 20px;
-font-size: 16px;
-color: #d9534f;
-}
