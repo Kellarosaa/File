@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Distortion and Bass Boost</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        input[type="file"] {
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio Distortion and Bass Boost Tool</h1>
+    <input type="file" id="audioFile" accept="audio/*">
+    <button id="processButton">Pack and Download</button>
+    <div id="status"></div>
+    <script>
+        document.getElementById('processButton').addEventListener('click', async function() {
+            const fileInput = document.getElementById('audioFile');
+            const statusDiv = document.getElementById('status');
+            if (fileInput.files.length === 0) {
+                statusDiv.textContent = 'Please upload an audio file.';
+                return;
+            }
+            const file = fileInput.files[0];
+            statusDiv.textContent = 'Processing audio...';
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await file.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            // Apply distortion and bass boost effects here (placeholder)
+            const processedBuffer = audioBuffer; // Placeholder for processed audio
+            const blob = new Blob([processedBuffer], { type: 'audio/gyatt' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'processed_audio.gyatt';
+            a.click();
+            URL.revokeObjectURL(url);
+            statusDiv.textContent = 'Audio processed and ready for download!';
+        });
+    </script>
+</body>
+</html>
