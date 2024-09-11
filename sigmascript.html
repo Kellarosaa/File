@@ -1,103 +1,69 @@
-```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Sigmascript</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Terminal Simulation</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+        }
+        #terminal {
+            border: 1px solid #333;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        input {
+            width: 100%;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: none;
+            outline: none;
+        }
+    </style>
 </head>
 <body>
-  <script>
-    let variables = {};
-  
-    function setup() {
-      createCanvas(800, 600);
-      textSize(24);
-    }
-  
-    function drawText(text, y) {
-      fill(0);
-      text(text, 10, y);
-    }
-  
-    function processInput(userInput) {
-      const lines = userInput.split('\n');
-      const output = [];
-  
-      for (let line of lines) {
-        line = line.trim();
-        if (line.startsWith("sigma(") && line.endsWith(")")) {
-          output.push(line.substring(6, line.length - 1));
-        } else if (line.startsWith("variable(") && line.endsWith(")")) {
-          const varName = line.substring(9, line.length - 1);
-          variables[varName] = 0;
-          output.push(`Variable '${varName}' created with initial value 0.`);
-        } else if (line.startsWith("question(") && line.endsWith(")")) {
-          const parts = line.substring(9, line.length - 1).split(')(');
-          if (parts.length === 2) {
-            const varName = parts[0];
-            const newValue = parseInt(parts[1]);
-            if (varName in variables) {
-              variables[varName] = newValue;
-              output.push(`Variable '${varName}' changed to ${newValue}.`);
-            } else {
-              output.push(`Variable '${varName}' does not exist.`);
+    <div id="terminal"></div>
+    <input type="text" id="input" placeholder="Type your command here..." autofocus />
+    <script>
+        const terminal = document.getElementById('terminal');
+        const input = document.getElementById('input');
+        let variables = {};
+
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const command = input.value;
+                processCommand(command);
+                input.value = '';
             }
-          }
-        } else if (line.startsWith("add ") && line.includes(" to ")) {
-          const parts = line.split(" to ");
-          if (parts.length === 2) {
-            const increment = parseInt(parts[0].substring(4));
-            const varName = parts[1];
-            if (varName in variables) {
-              variables[varName] += increment;
-              output.push(`Variable '${varName}' increased by ${increment}. New value: ${variables[varName]}.`);
+        });
+
+        function processCommand(command) {
+            const output = document.createElement('div');
+            if (command.startsWith('sigma(') && command.endsWith(')')) {
+                output.textContent = `Executing sigma with argument: ${command.slice(6, -1)}`;
+            } else if (command.startsWith('variable(') && command.endsWith(')')) {
+                const varName = command.slice(9, -1);
+                variables[varName] = 0;
+                output.textContent = `Variable ${varName} created with value: ${variables[varName]}`;
+            } else if (command.startsWith('increase(') && command.includes(') by ')) {
+                const varName = command.split('(')[1].split(')')[0];
+                variables[varName] = (variables[varName] || 0) + 1;
+                output.textContent = `Variable ${varName} increased to: ${variables[varName]}`;
+            } else if (command.startsWith('decrease(') && command.includes(') by ')) {
+                const varName = command.split('(')[1].split(')')[0];
+                variables[varName] = (variables[varName] || 0) - 1;
+                output.textContent = `Variable ${varName} decreased to: ${variables[varName]}`;
             } else {
-              output.push(`Variable '${varName}' does not exist.`);
+                output.textContent = 'Unknown command';
             }
-          }
-        } else if (line === "clear") {
-          output.length = 0;
-        } else {
-          output.push("Invalid command.");
+            terminal.appendChild(output);
+            terminal.scrollTop = terminal.scrollHeight;
         }
-      }
-  
-      return output;
-    }
-  
-    let inputBuffer = "";
-    let outputLines = [];
-  
-    function draw() {
-      background(255);
-      let yOffset = 0;
-      for (let i = 0; i < outputLines.length; i++) {
-        drawText(outputLines[i], 10 + i * 24);
-        yOffset++;
-      }
-      drawText(`> ${inputBuffer}`, 10 + yOffset * 24);
-    }
-  
-    function keyPressed() {
-      if (keyCode === ENTER) {
-        outputLines.push(...processInput(inputBuffer));
-        inputBuffer = "";
-      } else if (keyCode === BACKSPACE) {
-        inputBuffer = inputBuffer.slice(0, -1);
-      } else {
-        inputBuffer += key;
-      }
-    }
-  </script>
+    </script>
 </body>
 </html>
-```
