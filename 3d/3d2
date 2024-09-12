@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <input type="file" id="file-input" accept=".fbx,.glb,.blend" />
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <script>
+        const canvas = document.createElement('canvas');
+        document.body.appendChild(canvas);
+        const engine = new BABYLON.Engine(canvas, true);
+        const scene = new BABYLON.Scene(engine);
+        const camera = new BABYLON.ArcRotateCamera("camera", Math.PI / 2, Math.PI / 2, 5, BABYLON.Vector3.Zero(), scene);
+        camera.attachControl(canvas, true);
+        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+        const fileInput = document.getElementById('file-input');
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const extension = file.name.split('.').pop().toLowerCase();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                if (extension === 'glb') {
+                    BABYLON.SceneLoader.Append("", contents, scene, function () {
+                        engine.runRenderLoop(() => scene.render());
+                    });
+                } else {
+                    alert('Unsupported file format!');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        engine.runRenderLoop(() => scene.render());
+    </script>
+</body>
+</html>
