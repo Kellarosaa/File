@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Page Writing Tool</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #eaeaea; padding: 20px; }
+        .page { margin: 10px 0; padding: 10px; background: #fff; border: 1px solid #ddd; border-radius: 5px; }
+        button { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Advanced Page Writing Tool</h1>
+    <div id="pagesContainer"></div>
+    <button id="addPage">Add Page</button>
+    <button id="download">Download and Pack</button>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+        let pageCount = 0;
+
+        document.getElementById('addPage').addEventListener('click', () => {
+            pageCount++;
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'page';
+            pageDiv.innerHTML = `<textarea rows="4" cols="50" placeholder="Write your content here..."></textarea>`;
+            document.getElementById('pagesContainer').appendChild(pageDiv);
+        });
+
+        document.getElementById('download').addEventListener('click', () => {
+            for (let i = 1; i <= pageCount; i++) {
+                const pdf = new jsPDF();
+                const text = document.querySelectorAll('.page textarea')[i - 1].value;
+                pdf.text(text, 10, 10);
+                pdf.save(`Page_${i}.pdf`);
+            }
+        });
+    </script>
+</body>
+</html>
