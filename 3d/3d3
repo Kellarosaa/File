@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+</head>
+<body>
+    <input type="file" id="file-input" accept=".fbx,.glb,.blend" />
+    <a-scene>
+        <a-entity id="model" position="0 1.6 -3"></a-entity>
+    </a-scene>
+    <script>
+        const fileInput = document.getElementById('file-input');
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const extension = file.name.split('.').pop().toLowerCase();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                if (extension === 'glb') {
+                    const model = document.getElementById('model');
+                    model.setAttribute('gltf-model', URL.createObjectURL(file));
+                } else {
+                    alert('Unsupported file format!');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    </script>
+</body>
+</html>
