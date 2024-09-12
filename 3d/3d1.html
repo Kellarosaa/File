@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <input type="file" id="file-input" accept=".fbx,.glb,.blend" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/FBXLoader.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const fileInput = document.getElementById('file-input');
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                const extension = file.name.split('.').pop().toLowerCase();
+                if (extension === 'glb') {
+                    const loader = new THREE.GLTFLoader();
+                    loader.parse(contents, '', function (gltf) {
+                        scene.add(gltf.scene);
+                        animate();
+                    });
+                } else if (extension === 'fbx') {
+                    const loader = new THREE.FBXLoader();
+                    loader.parse(contents, '', function (object) {
+                        scene.add(object);
+                        animate();
+                    });
+                } else {
+                    alert('Unsupported file format!');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        camera.position.z = 5;
+    </script>
+</body>
+</html>
