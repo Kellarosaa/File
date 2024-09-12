@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Bottom Right UI</title>
+    <style>
+        .fixed-ui {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #28A745;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+        .fixed-ui:hover {
+            background-color: #218838;
+        }
+        .fixed-ui a {
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="fixed-ui">
+    <a href="#top" id="backToTop">Back to Top</a> | 
+    <a href="https://example.com" target="_blank">Visit Example.com</a>
+</div>
+
+<script>
+    document.getElementById('backToTop').addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
 
