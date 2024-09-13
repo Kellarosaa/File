@@ -21,12 +21,23 @@
         const { jsPDF } = window.jspdf;
         let pageCount = 0;
 
-        document.getElementById('addPage').addEventListener('click', () => {
+        function loadPages() {
+            const pages = JSON.parse(localStorage.getItem('pages')) || [];
+            pages.forEach(content => {
+                addPage(content);
+            });
+        }
+
+        function addPage(content = '') {
             pageCount++;
             const pageDiv = document.createElement('div');
             pageDiv.className = 'page';
-            pageDiv.innerHTML = `<textarea rows="4" cols="50" placeholder="Write your content here..."></textarea>`;
+            pageDiv.innerHTML = `<textarea rows="4" cols="50" placeholder="Write your content here...">${content}</textarea>`;
             document.getElementById('pagesContainer').appendChild(pageDiv);
+        }
+
+        document.getElementById('addPage').addEventListener('click', () => {
+            addPage();
         });
 
         document.getElementById('download').addEventListener('click', () => {
@@ -37,6 +48,17 @@
                 pdf.save(`Page_${i}.pdf`);
             }
         });
+
+        function autoSave() {
+            const pages = Array.from(document.querySelectorAll('.page textarea')).map(textarea => textarea.value);
+            localStorage.setItem('pages', JSON.stringify(pages));
+        }
+
+        setInterval(autoSave, 5000); // Auto-save every 5 seconds
+
+        window.addEventListener('beforeunload', autoSave);
+
+        loadPages();
     </script>
 </body>
 </html>
