@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Brainf*ck Compiler</title>
+</head>
+<body>
+    <h1>Advanced Brainf*ck Compiler</h1>
+    <textarea id="inputText" rows="10" cols="30" placeholder="Type your text here..."></textarea><br>
+    <label for="optimize">Optimize Code:</label>
+    <input type="checkbox" id="optimize"><br>
+    <button onclick="compile()">Compile to Brainf*ck</button>
+    <h2>Generated Brainf*ck Code:</h2>
+    <pre id="outputCode"></pre>
+    <button id="downloadBtn" style="display:none;">Download .bf File</button>
+
+    <script>
+        function compile() {
+            const input = document.getElementById('inputText').value;
+            const optimize = document.getElementById('optimize').checked;
+            const output = textToBrainfuck(input, optimize);
+            document.getElementById('outputCode').textContent = output;
+            document.getElementById('downloadBtn').style.display = 'block';
+            document.getElementById('downloadBtn').onclick = function() {
+                downloadFile(output);
+            };
+        }
+
+        function textToBrainfuck(text, optimize) {
+            let bfCode = '';
+            for (let char of text) {
+                bfCode += '>' + '++++++++++[>++++++++++<-]>.'; // Simplified conversion
+            }
+            return optimize ? optimizeCode(bfCode) : bfCode;
+        }
+
+        function optimizeCode(code) {
+            // Placeholder for optimization logic
+            return code.replace(/>+/g, '>'); // Example optimization
+        }
+
+        function downloadFile(content) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'output.bf';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
