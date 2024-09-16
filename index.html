@@ -1,41 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Python File</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+a:link, a:visited {
+  background-color: #808080;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+a:hover, a:active {
+  background-color: red;
+}
+</style>
 </head>
-<body class="bg-gray-100">
-    <div class="max-w-lg mx-auto mt-10 p-5 bg-white rounded-lg shadow-lg">
-        <h1 class="text-2xl font-bold text-center">Python file Downloader</h1>
-        <textarea id="codeInput" class="w-full h-64 p-2 mt-4 border border-gray-300 rounded" placeholder="Write your Python code here..."></textarea>
-        <input type="text" id="fileName" class="w-full mt-4 p-2 border border-gray-300 rounded" placeholder="Enter file name (without extension)">
-        <button id="downloadBtn" class="w-full mt-4 bg-green-500 text-white font-semibold py-2 rounded hover:bg-green-600">Pack and Download</button>
-        <p id="errorMsg" class="text-red-500 mt-2 hidden">Please enter a valid file name.</p>
-    </div>
+<body style="background-color:black;">
 
-    <script>
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            const code = document.getElementById('codeInput').value;
-            const fileName = document.getElementById('fileName').value;
-            const errorMsg = document.getElementById('errorMsg');
-
-            if (!fileName) {
-                errorMsg.classList.remove('hidden');
-                return;
-            } else {
-                errorMsg.classList.add('hidden');
-            }
-
-            const blob = new Blob([code], { type: 'text/python' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName.endsWith('.py') ? fileName : `${fileName}.py`;
-            a.click();
-            URL.revokeObjectURL(url);
-        });
-    </script>
+<a href="software.html" target="_blank">software</a>
+<a href="documentation" target="_blank">documentation</a>
+<a href="scripts" target="_blank">scripts</a>
+<a href="tools">tools</a>
+<a href="os.html" target="_blank">operating system</a>
+<a href="files" target="_blank">files</a>
+<a href="html">html</a>
+<a href="sigmascript">sigmascript</a>
 </body>
 </html>
